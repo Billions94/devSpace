@@ -21,7 +21,7 @@ public class CommentResolver {
     }
 
     @QueryMapping
-    List<Comment> commentsByContent(@Argument("commentId") String content) {
+    List<Comment> commentsByContent(@Argument("content") String content) {
         return commentService.commentsByContent(content);
     }
 
