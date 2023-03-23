@@ -21,28 +21,28 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "name", nullable = false, columnDefinition = "text")
     private String name;
 
-    @Column(name = "username", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "username", nullable = false, columnDefinition = "text")
     private String username;
 
-    @Column(name = "image", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "image", nullable = false, columnDefinition = "text")
     private String image;
 
-    @Column(name = "bio", nullable = false, columnDefinition = "VARCHAR(100)")
+    @Column(name = "bio", nullable = false, columnDefinition = "varchar(100)")
     private String bio;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, columnDefinition = "text")
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Post> posts;
 
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "updated_at", columnDefinition = "timestamp")
     private LocalDateTime updatedAt;
 }
