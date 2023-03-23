@@ -31,7 +31,7 @@ public class CommentService implements CommentServiceInterface {
         return commentRepository
                 .findAll()
                 .stream()
-                .filter(item -> item.getContent().equals(content))
+                .filter(item -> item.getContent().contains(content))
                 .toList();
     }
 
