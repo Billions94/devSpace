@@ -1,37 +1,36 @@
-package com.api.devSpace.post.entity;
+package com.api.devSpace.comment.entity;
 
-import com.api.devSpace.comment.entity.Comment;
+import com.api.devSpace.post.entity.Post;
 import com.api.devSpace.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-@Entity(name = "Post")
+@Entity(name = "Comment")
 @NoArgsConstructor
-public class Post {
+public class Comment {
     @Id
-    @SequenceGenerator(name = "post_sequence", sequenceName = "post_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_sequence")
-    @Column(name = "post_id", nullable = false)
+    @SequenceGenerator(name = "comment_sequence", sequenceName = "comment_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_sequence")
+    @Column(name = "comment_id", nullable = false)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @Column(name = "content", nullable = false, columnDefinition = "text")
     private String content;
 
     @Column(name = "media", columnDefinition = "text")
     private String media;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
-    List<Comment> comments;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime createdAt;

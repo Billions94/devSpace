@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PostServiceInterface {
     List<Post> posts();
+    List<Post> postsByContent(String content);
 
     Object post(Long postId);
 

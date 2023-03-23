@@ -8,6 +8,12 @@ type Query {
     # Post Queries
     posts: [Post!]!
     post(postId: Int!): Result!
+    postsByContent(content: String!): [Post!]!
+
+    # Comment Queries
+    comments: [Comment!]!
+    comment(commentId: Int!): Result!
+    commentsByContent(content: String!): [Comment!]!
 }
 
 type Mutation {
@@ -20,12 +26,18 @@ type Mutation {
     createPost(userId: Int!, postInput: PostInput!): Result!
     updatePost(postId: Int!, postInput: PostInput!): Result!
     deletePost(postId: Int!): String!
+
+    # Comment Mutations
+    createComment(postId: Int!, commentInput: CommentInput!): Result!
+    updateComment(commentId: Int!, commentInput: CommentInput!): Result!
+    deleteComment(commentId: Int!): String!
 }
 
 type Success {
     id: Int!
     user: User
     post: Post
+    comment: Comment
 }
 
 type Failed {
@@ -39,14 +51,28 @@ type User {
     image: String
     bio: String
     email: String
+    post: [Post!]
+    comments: [Comment!]
     createdAt: String
     updatedAt: String
 }
 
 type Post {
     id: Int!
-    content: String!
     user: User!
+    content: String!
+    media: String
+    comments: [Comment!]
+    createdAt: String
+    updatedAt: String
+}
+
+type Comment {
+    id: Int!
+    user: User!
+    post: Post!
+    content: String!
+    media: String
     createdAt: String
     updatedAt: String
 }
@@ -61,6 +87,10 @@ input UserInput {
 
 input PostInput {
     content: String
-    createdAt: String
-    updatedAt: String
+    media: String
+}
+
+input CommentInput {
+    content: String
+    media: String
 }
