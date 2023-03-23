@@ -28,7 +28,11 @@ public class CommentService implements CommentServiceInterface {
     }
 
     public List<Comment> commentsByContent(String content) {
-        return commentRepository.getCommentsByContent(content);
+        return commentRepository
+                .findAll()
+                .stream()
+                .filter(item -> item.getContent().equals(content))
+                .toList();
     }
 
     public Object comment(Long commentId) {
@@ -55,8 +59,8 @@ public class CommentService implements CommentServiceInterface {
 
             commentInput.setPost(post);
             commentInput.setUser(user);
-
             commentInput.setCreatedAt(LocalDateTime.now());
+
             postRepository.save(post);
             userRepository.save(user);
 

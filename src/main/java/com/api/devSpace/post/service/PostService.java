@@ -24,7 +24,10 @@ public class PostService implements PostServiceInterface {
     }
 
     public List<Post> postsByContent(String content) {
-        return postRepository.getPostsByContent(content);
+        return postRepository.findAll()
+                             .stream()
+                             .filter(item -> item.getContent().equals(content))
+                             .toList();
     }
 
     public Object post(Long postId) {

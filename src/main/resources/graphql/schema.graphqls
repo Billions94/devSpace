@@ -88,13 +88,9 @@ input UserInput {
 input PostInput {
     content: String
     media: String
-    createdAt: String
-    updatedAt: String
 }
 
 input CommentInput {
     content: String
     media: String
-    createdAt: String
-    updatedAt: String
 }
