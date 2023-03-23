@@ -28,11 +28,9 @@ public class CommentService implements CommentServiceInterface {
     }
 
     public List<Comment> commentsByContent(String content) {
-        return commentRepository
-                .findAll()
-                .stream()
-                .filter(item -> item.getContent().contains(content))
-                .toList();
+        return commentRepository.findAll().stream()
+                                .filter(item -> item.getContent().contains(content))
+                                .toList();
     }
 
     public Object comment(Long commentId) {
