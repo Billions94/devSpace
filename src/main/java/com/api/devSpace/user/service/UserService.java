@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
 
     public List<User> users() {

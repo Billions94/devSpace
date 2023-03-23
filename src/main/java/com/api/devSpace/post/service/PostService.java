@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
-public class PostService {
+public class PostService implements PostServiceInterface {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
