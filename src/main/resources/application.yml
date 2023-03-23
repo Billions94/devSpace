@@ -1,0 +1,17 @@
+managements:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+  info:
+    env:
+      enabled: true
+  application:
+    name: test
+    description: Social App with GraphQL
+    author: Ejiroghene Egbedi
+spring:
+  profiles:
+    active: dev
+    version: '@project.version@'

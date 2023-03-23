@@ -1,0 +1,66 @@
+union Result = Success | Failed
+
+type Query {
+    # User Queries
+    users: [User!]!
+    user(userId: Int!): Result!
+
+    # Post Queries
+    posts: [Post!]!
+    post(postId: Int!): Result!
+}
+
+type Mutation {
+    # User Mutations
+    createUser(userInput: UserInput!): Result!
+    updateUser(userId: Int!, userInput: UserInput!): Result!
+    deleteUser(userId: Int!): String!
+
+    # Post Mutations
+    createPost(userId: Int!, postInput: PostInput!): Result!
+    updatePost(postId: Int!, postInput: PostInput!): Result!
+    deletePost(postId: Int!): String!
+}
+
+type Success {
+    id: Int!
+    user: User
+    post: Post
+}
+
+type Failed {
+    errorMessage: String!
+}
+
+type User {
+    id: Int!
+    name: String!
+    username: String
+    image: String
+    bio: String
+    email: String
+    createdAt: String
+    updatedAt: String
+}
+
+type Post {
+    id: Int!
+    content: String!
+    user: User!
+    createdAt: String
+    updatedAt: String
+}
+
+input UserInput {
+    name: String
+    username: String
+    image: String
+    bio: String
+    email: String
+}
+
+input PostInput {
+    content: String
+    createdAt: String
+    updatedAt: String
+}
