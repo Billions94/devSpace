@@ -1,5 +1,6 @@
 package com.api.devSpace.user.entity;
 
+import com.api.devSpace.comment.entity.Comment;
 import com.api.devSpace.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -39,6 +40,10 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Post> posts;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Comment> comments;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime createdAt;

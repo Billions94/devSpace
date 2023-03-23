@@ -23,6 +23,10 @@ public class PostService implements PostServiceInterface {
         return postRepository.findAll();
     }
 
+    public List<Post> postsByContent(String content) {
+        return postRepository.getPostsByContent(content);
+    }
+
     public Object post(Long postId) {
         try {
             Post post = postRepository
@@ -61,6 +65,14 @@ public class PostService implements PostServiceInterface {
                             && !Objects.equals(post.getContent(), postInput.getContent())
             ) {
                 post.setContent(postInput.getContent());
+            }
+
+            if (
+                    postInput.getMedia() != null
+                            && postInput.getMedia().length() > 0
+                            && !Objects.equals(post.getContent(), postInput.getMedia())
+            ) {
+                post.setMedia(postInput.getMedia());
             }
 
             post.setUpdatedAt(LocalDateTime.now());
