@@ -17,6 +17,9 @@ type Query {
 }
 
 type Mutation {
+    register(registerInput: UserInput): AuthResponse!
+    login(loginInput: LoginInput): AuthResponse!
+
     # User Mutations
     createUser(userInput: UserInput!): Result!
     updateUser(userId: Int!, userInput: UserInput!): Result!
@@ -31,6 +34,15 @@ type Mutation {
     createComment(postId: Int!, commentInput: CommentInput!): Result!
     updateComment(commentId: Int!, commentInput: CommentInput!): Result!
     deleteComment(commentId: Int!): String!
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}
+
+type AuthResponse {
+    token: String!
 }
 
 type Success {
@@ -82,7 +94,8 @@ input UserInput {
     username: String
     image: String
     bio: String
-    email: String
+    email: String!
+    password: String!
 }
 
 input PostInput {

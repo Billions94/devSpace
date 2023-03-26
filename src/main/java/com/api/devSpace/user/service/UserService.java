@@ -1,11 +1,13 @@
 package com.api.devSpace.user.service;
 
 import com.api.devSpace.exception.PSQLException;
+import com.api.devSpace.user.entity.Role;
 import com.api.devSpace.user.entity.User;
 import com.api.devSpace.response.Failed;
 import com.api.devSpace.response.Success;
 import com.api.devSpace.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> users() {
         return userRepository.findAll();
@@ -41,6 +44,8 @@ public class UserService implements UserServiceInterface {
             if (userRepository.existsByEmail(userInput.getEmail()))
                 throw new PSQLException("Email is already taken");
 
+            userInput.setRole(Role.USER);
+            userInput.setPassword(passwordEncoder.encode(userInput.getPassword()));
             userInput.setCreatedAt(LocalDateTime.now());
             return new Success(userRepository.save(userInput).getId());
         } catch (PSQLException e) {
