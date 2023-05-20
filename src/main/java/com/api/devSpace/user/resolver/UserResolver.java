@@ -1,6 +1,7 @@
 package com.api.devSpace.user.resolver;
 
 
+import com.api.devSpace.user.RegisterInput;
 import com.api.devSpace.user.entity.User;
 import com.api.devSpace.user.service.UserService;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class UserResolver {
 
     @QueryMapping
     List<User> users() {
-        return  userService.users();
+        return userService.users();
     }
 
     @QueryMapping
@@ -27,8 +28,8 @@ public class UserResolver {
     }
 
     @MutationMapping
-    Object createUser(@Argument("userInput") User userInput) {
-        return userService.createUser(userInput);
+    Object createUser(@Argument("registerInput") RegisterInput registerInput) {
+        return userService.createUser(registerInput);
     }
 
     @MutationMapping

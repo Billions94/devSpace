@@ -1,10 +1,11 @@
 package com.api.devSpace.user.service;
 
 import com.api.devSpace.exception.PSQLException;
-import com.api.devSpace.user.entity.Role;
-import com.api.devSpace.user.entity.User;
 import com.api.devSpace.response.Failed;
 import com.api.devSpace.response.Success;
+import com.api.devSpace.user.RegisterInput;
+import com.api.devSpace.user.entity.Role;
+import com.api.devSpace.user.entity.User;
 import com.api.devSpace.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,18 +37,28 @@ public class UserService implements UserServiceInterface {
         }
     }
 
-    public Object createUser(User userInput) {
+    public Object createUser(RegisterInput registerInput) {
         try {
-            if (userRepository.existsByUsername(userInput.getUsername()))
+            if (userRepository.existsByUsername(registerInput.getUserDetails().getUsername()))
                 throw new PSQLException("Username is already taken");
 
-            if (userRepository.existsByEmail(userInput.getEmail()))
+            if (userRepository.existsByEmail(registerInput.getEmail()))
                 throw new PSQLException("Email is already taken");
 
-            userInput.setRole(Role.USER);
-            userInput.setPassword(passwordEncoder.encode(userInput.getPassword()));
-            userInput.setCreatedAt(LocalDateTime.now());
-            return new Success(userRepository.save(userInput).getId());
+            if (registerInput.getPassword().length() <= 0) {
+                throw new PSQLException("Password field cannot be empty");
+            } else if (registerInput.getPassword().length() < 8) {
+                throw new PSQLException("Password must be at least 8 characters long !!");
+            }
+
+            registerInput.getUserDetails().setRole(Role.USER);
+            registerInput.getUserDetails().setEmail(registerInput.getEmail());
+            registerInput.getUserDetails()
+                    .setPassword(passwordEncoder.encode(registerInput.getPassword()));
+            registerInput.getUserDetails().setCreatedAt(LocalDateTime.now());
+
+            User user = userRepository.save(registerInput.getUserDetails());
+            return new Success(user.getId());
         } catch (PSQLException e) {
             return new Failed(e.getMessage());
         }
@@ -58,6 +69,8 @@ public class UserService implements UserServiceInterface {
             User user = userRepository
                     .findById(userId)
                     .orElseThrow(() -> new PSQLException("User with id: " + userId + " does not exist"));
+
+            System.out.println(userInput.getUsername());
 
             if (userRepository.existsByUsername(userInput.getUsername()))
                 throw new PSQLException("Username already exists");
@@ -113,7 +126,7 @@ public class UserService implements UserServiceInterface {
     }
 
     public String deleteUser(Long userId) {
-        if(!userRepository.existsById(userId))
+        if (!userRepository.existsById(userId))
             return "User with id: " + userId + " does not exist";
 
         userRepository.deleteById(userId);

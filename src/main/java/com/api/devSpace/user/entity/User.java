@@ -2,6 +2,7 @@ package com.api.devSpace.user.entity;
 
 import com.api.devSpace.comment.entity.Comment;
 import com.api.devSpace.post.entity.Post;
+import com.api.devSpace.space.Entity.Space;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,15 +49,19 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Space> spaces = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime createdAt;
@@ -70,8 +76,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
-    };
+        return username;
+    }
 
     @Override
     public String getPassword() {
