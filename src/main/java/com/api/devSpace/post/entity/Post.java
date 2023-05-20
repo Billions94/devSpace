@@ -19,9 +19,9 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @Column(name = "content", nullable = false, columnDefinition = "text")
     private String content;
@@ -29,9 +29,9 @@ public class Post {
     @Column(name = "media", columnDefinition = "text")
     private String media;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
-    List<Comment> comments;
+    private List<Comment> comments;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime createdAt;

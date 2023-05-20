@@ -14,11 +14,22 @@ type Query {
     comments: [Comment!]!
     comment(commentId: Int!): Result!
     commentsByContent(content: String!): [Comment!]!
+
+    # Space Queries
+    spaces: [Space!]!
+    space(spaceId: Int!): Result!
+
+    # Message Queries
+    messages: [Message!]!
+    message(messageId: Int!): Result!
 }
 
 type Mutation {
+    register(registerInput: RegisterInput): AuthResponse!
+    login(loginInput: LoginInput): AuthResponse!
+
     # User Mutations
-    createUser(userInput: UserInput!): Result!
+    createUser(registerInput: RegisterInput!): Result!
     updateUser(userId: Int!, userInput: UserInput!): Result!
     deleteUser(userId: Int!): String!
 
@@ -31,6 +42,26 @@ type Mutation {
     createComment(postId: Int!, commentInput: CommentInput!): Result!
     updateComment(commentId: Int!, commentInput: CommentInput!): Result!
     deleteComment(commentId: Int!): String!
+
+    # Space Mutations
+    createSpace(spaceInput: SpaceInput!): Result!
+    updateSpace(spaceId: Int!, spaceInput: SpaceInput!): Result!
+    joinSpace(spaceId: Int!, userId: Int!): Result!
+    deleteSpace(spaceId: Int!): String!
+
+    # Message Mutations
+    createMessage(messageInput: MessageInput!): Result!
+    updateMessage(spaceId: Int!, spaceInput: MessageInput!): Result!
+    deleteMessage(spaceId: Int!): String!
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}
+
+type AuthResponse {
+    token: String!
 }
 
 type Success {
@@ -38,6 +69,8 @@ type Success {
     user: User
     post: Post
     comment: Comment
+    space: Space
+    joinedSpace: String
 }
 
 type Failed {
@@ -51,7 +84,7 @@ type User {
     image: String
     bio: String
     email: String
-    post: [Post!]
+    posts: [Post!]
     comments: [Comment!]
     createdAt: String
     updatedAt: String
@@ -77,12 +110,35 @@ type Comment {
     updatedAt: String
 }
 
+type Space {
+    id: Int!
+    members: [User!]!
+    name: String!
+    messages: [Message!]!
+    createdAt: String
+    updatedAt: String
+}
+
+type Message {
+    id: Int!
+    space: Space!
+    sender: User!
+    receiver: User!
+    createdAt: String
+    updatedAt: String
+}
+
+input RegisterInput {
+    userDetails: UserInput!
+    email: String!
+    password: String!
+}
+
 input UserInput {
     name: String
     username: String
     image: String
     bio: String
-    email: String
 }
 
 input PostInput {
@@ -93,4 +149,21 @@ input PostInput {
 input CommentInput {
     content: String
     media: String
+}
+
+input SpaceInput {
+    name: String!
+    userId: Int!
+}
+
+input MessageInput {
+    sender: String
+    receiver: String
+    status: Status
+}
+
+enum Status {
+    JOIN
+    MESSAGE
+    LEAVE
 }
